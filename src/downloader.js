@@ -105,7 +105,8 @@ function downloadFile(file_url, file_output_name) {
         const upload_filename = match ? match[1] : file_name;
 
         // Create the curl command needed for the upload
-        const curlcmd = sprintf("curl -s -L -k -T %s -u '%s:' -H 'X-Requested-With: XMLHttpRequest' %s/%s", file_path, upload_secret, upload_url, upload_filename);
+        // const curlcmd = sprintf("curl -s -L -k -T %s -u '%s:' -H 'X-Requested-With: XMLHttpRequest' %s/%s", file_path, upload_secret, upload_url, upload_filename);
+        const curlcmd = sprintf("curl -s -L -k -T %s -u '%s:' -H 'X-Requested-With: XMLHttpRequest' %s/%s", file_path, upload_secret, upload_url, file_output_name);
 
         // Try to execute the command
         console.log("Trying to upload using: %s", curlcmd);
