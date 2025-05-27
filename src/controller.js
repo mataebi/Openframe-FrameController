@@ -352,21 +352,28 @@ fc.changeArtwork = function() {
         tokens = {},
         parsed, file_name;
 
-    debug('details', old_artwork, old_format, new_artwork, new_format);
+    debug('artwork details', old_artwork, old_format, new_artwork, new_format);
 
     return new Promise(function(resolve, reject) {
 
-        //artwork extension not installed, don't update
+        // artwork extension not installed, don't update
         if (!new_format) {
             console.error(chalk.red('The artwork format is not installed: ' + new_artwork.format + '\n'));
             return reject();
         }
 
-        // old artwork is new artwork, don't update.
-        if (old_artwork && JSON.stringify(old_artwork) === JSON.stringify(new_artwork)) {
-            debug('new artwork same as current', old_artwork.id, new_artwork.id);
-            return reject();
-        }        
+        if (old_artwork) {
+          // old_artwork contains the "tokens" object which never
+          // exists in new_artwork so remove it before compairing
+          const { tokens, ...old_artwork_tmp } = old_artwork;
+          debug('tmp artwork details', old_artwork_tmp, new_artwork);
+
+          // if old artwork is new artwork, don't update.
+          if (JSON.stringify(old_artwork_tmp) === JSON.stringify(new_artwork)) {
+              debug('new artwork same as current', old_artwork.id, new_artwork.id);
+              return reject();
+          }        
+        }
 
         function swapArt() {
             debug('swapArt');
